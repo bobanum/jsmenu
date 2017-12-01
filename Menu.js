@@ -34,15 +34,7 @@ class Menu extends DOMObject {
 			}
 		}
 	}
-	set evts(evts) {
-		var k;
-		for (k in evts) {
-			if (this._dom && this._evt[k]) {
-				this._dom.removeEventListener(k, this._evt[k]);
-			}
-		}
-	}
-	DOM_create() {
+	dom_create() {
 		var result;
 		result = document.createElement("div");
 		DOMObject.walk(this._attributes, result.setAttribute, result);
@@ -50,11 +42,11 @@ class Menu extends DOMObject {
 		if (!this._parentMenu) {
 			result.classList.add("menu");
 		}
-		this.DOM_label(result);
-		this.DOM_items(result);
+		this.dom_label(result);
+		this.dom_items(result);
 		return result;
 	}
-	DOM_items(container) {
+	dom_items(container) {
 		var result;
 		result = document.createElement("ul");
 		for (let k in this.items) {
@@ -72,7 +64,7 @@ class Menu extends DOMObject {
 		}
 		return result;
 	}
-	DOM_label(container) {
+	dom_label(container) {
 		var result;
 		result = document.createElement("span");
 		if (!this.hideLabel) {
@@ -100,7 +92,7 @@ class Menu extends DOMObject {
 //					this.classList.remove("active");
 				}
 			}
-		}
+		};
 	}
 }
 Menu.init();
