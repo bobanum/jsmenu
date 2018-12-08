@@ -82,6 +82,57 @@ class Menu extends DOMObject {
 		result.classList.add("label");
 		return result;
 	}
+	/**
+	 * Creates a toolbar using icons from glyphter font
+	 * @param   {object}      tools           The tools to add. {class:event}
+	 * @param   {string}      [prefix="icon"] Prefix to the class
+	 * @returns {HTMLElement} Nav element
+	 */
+	static dom_toolbar(tools, prefix) {
+		var result;
+		prefix = prefix || "icon";
+		result = document.createElement("fieldset");
+		result.classList.add("toolbar");
+		result.appendChild(this.dom_toolbar_group(tools, prefix));
+		return result;
+	}
+	/**
+	 * Returns a div filled with tools
+	 * @param   {object|Array} tools  The tools to display. If Array, creates another subgroup.
+	 * @param   {string}       prefix Prefix to apply to the class (for the icon)
+	 * @returns {HTMLElement}  The resulting element
+	 * @private Is called by dom_toolbar
+	 */
+	static dom_toolbar_group(tools, prefix) {
+		var result;
+		result = document.createElement("div");
+		result.classList.add("toolbar-group");
+		if (tools instanceof Array) {
+			tools.forEach((t)=>result.appendChild(this.dom_toolbar_group(t, prefix)));
+		} else {
+			for (let k in tools) {
+				result.appendChild(this.dom_toolbar_tool(prefix + "-" + k, tools[k]));
+			}
+		}
+		return result;
+	}
+	/**
+	 * Returns a button of a toolbar
+	 * @param   {string}      icon  The class of the button
+	 * @param   {function}    click The "click" event
+	 * @returns {HTMLElement} A <button> element
+	 * @private Called by dom_toolbar_group
+	 */
+	static dom_toolbar_tool(icon, click) {
+		var result;
+		result = document.createElement("button");
+		result.classList.add(icon);
+		result.setAttribute("id", "btn_" + icon);
+		if (click) {
+			result.addEventListener("click", click);
+		}
+		return result;
+	}
 	static init() {
 		this.prototype.evt = {
 			li: {
